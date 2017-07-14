@@ -90,15 +90,27 @@ public class Database {
         }
     }
     
-    public static ResultSet generateInOut(){
+    public static ResultSet generateRental(){
         ResultSet rs= null;
         try{
             Statement stmt = (Statement) Database.GetConnection().createStatement();
-            String query = "SELECT a.id, b.name as account, c.name as type, d.name as category, a.amount, a.transaction_date, a.description FROM inoutcome as a JOIN asset as b ON b.id = a.asset_id JOIN type as c ON c.id = a.transaction_type JOIN category as d ON d.id = a.category_id";
+            String query = "select a.*, b.jenis, c.nama from daftar_rental as a JOIN daftar_kendaraan as b ON b.id = a.id_kendaraan JOIN daftar_customer as c ON c.id = a.id_customer";
             rs = stmt.executeQuery(query);
         } catch(Exception e){
             e.printStackTrace();
         }
         return rs;
     }
+    
+    public static ResultSet generateRentalSearch(String search){
+        ResultSet rs= null;
+        try{
+            Statement stmt = (Statement) Database.GetConnection().createStatement();
+            String query = "select a.*, b.jenis, c.nama from daftar_rental as a JOIN daftar_kendaraan as b ON b.id = a.id_kendaraan JOIN daftar_customer as c ON c.id = a.id_customer where " + search;
+            rs = stmt.executeQuery(query);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return rs;
+    } 
 }

@@ -9,6 +9,7 @@ import Database.Database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 import models.Kendaraan;
 
 /**
@@ -133,21 +134,25 @@ public class FormDaftarKendaraan extends javax.swing.JInternalFrame {
         String jenis = mJenis.getText();
         Integer harga_per_hari = Integer.parseInt(mHargaPerHari.getText());
         
-        if(isEdit){
-            String set = "merk = '" + merk + "', jenis = '" + jenis + "', harga_per_hari = '" + harga_per_hari + "'";
-            Database.updateData("daftar_kendaraan", set, k_id);
-            DaftarKendaraan v = new DaftarKendaraan(jdp);
-            jdp.add(v);
-            v.setVisible(true);
-            this.dispose();
+        if(formFill() != true){
+            
         } else {
-            String attr = "(merk, jenis, harga_per_hari)";
-            String value = "('"+merk+"','"+jenis+"','"+harga_per_hari+"')";
-            Database.insertData("daftar_kendaraan", attr, value);
-            DaftarKendaraan v = new DaftarKendaraan(jdp);
-            jdp.add(v);
-            v.setVisible(true);
-            this.dispose();
+            if(isEdit){
+                String set = "merk = '" + merk + "', jenis = '" + jenis + "', harga_per_hari = '" + harga_per_hari + "'";
+                Database.updateData("daftar_kendaraan", set, k_id);
+                DaftarKendaraan v = new DaftarKendaraan(jdp);
+                jdp.add(v);
+                v.setVisible(true);
+                this.dispose();
+            } else {
+                String attr = "(merk, jenis, harga_per_hari)";
+                String value = "('"+merk+"','"+jenis+"','"+harga_per_hari+"')";
+                Database.insertData("daftar_kendaraan", attr, value);
+                DaftarKendaraan v = new DaftarKendaraan(jdp);
+                jdp.add(v);
+                v.setVisible(true);
+                this.dispose();
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -164,7 +169,25 @@ public class FormDaftarKendaraan extends javax.swing.JInternalFrame {
             ex.getMessage();
         } 
     }
-
+    
+     private Boolean formFill(){
+        Boolean stat;
+        if(mMerk.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "Merk harus diisi!");
+            stat = false;
+        } else if(mJenis.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "Jenis harus diisi!");
+            stat = false;
+        } else if(mHargaPerHari.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "Harga Per Hari harus diisi!");
+            stat = false;
+        } else {
+            stat = true;
+        }
+        
+        return stat;
+    }
+     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

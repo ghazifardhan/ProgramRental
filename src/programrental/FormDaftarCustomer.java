@@ -14,6 +14,7 @@ import Database.Database;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 
 public class FormDaftarCustomer extends javax.swing.JInternalFrame {
 
@@ -183,25 +184,54 @@ public class FormDaftarCustomer extends javax.swing.JInternalFrame {
         String no_id = mNoId.getText();
         String no_hp = mNoHp.getText();
         String umur = mUmur.getText();
-
-        if(isEdit){
-            String set = "nama = '" + nama + "', alamat = '" + alamat + "', id_type = '" + id_type + "', no_id = '" + no_id + "', no_hp = '" + no_hp + "', umur = '" + umur + "'";
-            Database.updateData(tableName, set, k_id);
-            DaftarCustomer v = new DaftarCustomer(jdp);
-            jdp.add(v);
-            v.setVisible(true);
-            this.dispose();
+        
+        if(formFill() != true){
+            //formFill();
         } else {
-            String attr = "(nama, alamat, id_type, no_id, no_hp, umur)";
-            String value = "('"+nama+"','"+alamat+"','"+id_type+"','"+no_id+"','"+no_hp+"','"+umur+"')";
-            Database.insertData(tableName, attr, value);
-            DaftarCustomer v = new DaftarCustomer(jdp);
-            jdp.add(v);
-            v.setVisible(true);
-            this.dispose();
+            if(isEdit){
+                String set = "nama = '" + nama + "', alamat = '" + alamat + "', id_type = '" + id_type + "', no_id = '" + no_id + "', no_hp = '" + no_hp + "', umur = '" + umur + "'";
+                Database.updateData(tableName, set, k_id);
+                DaftarCustomer v = new DaftarCustomer(jdp);
+                jdp.add(v);
+                v.setVisible(true);
+                this.dispose();
+            } else {
+                String attr = "(nama, alamat, id_type, no_id, no_hp, umur)";
+                String value = "('"+nama+"','"+alamat+"','"+id_type+"','"+no_id+"','"+no_hp+"','"+umur+"')";
+                Database.insertData(tableName, attr, value);
+                DaftarCustomer v = new DaftarCustomer(jdp);
+                jdp.add(v);
+                v.setVisible(true);
+                this.dispose();
+            }
         }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private Boolean formFill(){
+        Boolean stat;
+        if(mNama.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "Nama harus diisi!");
+            stat = false;
+        } else if(mAlamat.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "Alamat harus diisi!");
+            stat = false;
+        } else if(mNoId.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "No Id harus diisi!");
+            stat = false;
+        } else if(mNoHp.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "No HP harus diisi!");
+            stat = false;
+        } else if(mUmur.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "Umur harus diisi!");
+            stat = false;
+        } else {
+            stat = true;
+        }
+        
+        return stat;
+    }
+    
     private void mNoHpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mNoHpActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_mNoHpActionPerformed
